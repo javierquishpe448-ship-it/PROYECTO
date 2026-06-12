@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PROYECTO DE GRADO</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:400px;
+    background:#1e293b;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+h1{
+    color:white;
+    margin-bottom:10px;
+}
+
+p{
+    color:#cbd5e1;
+    margin-bottom:25px;
+}
+
+.estado{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.encendido{
+    color:#22c55e;
+}
+
+.apagado{
+    color:#ef4444;
+}
+
+button{
+    width:150px;
+    height:60px;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    margin:10px;
+}
+
+.btnOn{
+    background:#22c55e;
+    color:white;
+}
+
+.btnOff{
+    background:#ef4444;
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>PROYECTO DE GRADO</h1>
+
+    <p>BY: JAVIER QUISHPE Y JOHANNA SINCHIGUANO</p>
+
+    <div id="estado" class="estado apagado">
+        APAGADO
+    </div>
+
+    <button class="btnOn" onclick="encender()">
+        ENCENDER
+    </button>
+
+    <button class="btnOff" onclick="apagar()">
+        APAGAR
+    </button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    onValue
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB7nl9XVuBSMpw8E2gG1sFhDttWmdi3nkQ",
+    authDomain: "proyectodegrado-884a6.firebaseapp.com",
+    databaseURL: "https://proyectodegrado-884a6-default-rtdb.firebaseio.com",
+    projectId: "proyectodegrado-884a6",
+    storageBucket: "proyectodegrado-884a6.firebasestorage.app",
+    messagingSenderId: "835835678166",
+    appId: "1:835835678166:web:ca5eaf9b3dff2e336a2877"
+  };
+
+/* =========================== */
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const focoRef = ref(db,"foco");
+
+window.encender = function()
+{
+    set(focoRef,1);
+}
+
+window.apagar = function()
+{
+    set(focoRef,0);
+}
+
+onValue(focoRef,(snapshot)=>{
+
+    const valor = snapshot.val();
+
+    if(valor == 1)
+    {
+        document.getElementById("estado").innerHTML="ENCENDIDO";
+        document.getElementById("estado").className="estado encendido";
+    }
+    else
+    {
+        document.getElementById("estado").innerHTML="APAGADO";
+        document.getElementById("estado").className="estado apagado";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
